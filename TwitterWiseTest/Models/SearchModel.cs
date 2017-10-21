@@ -64,6 +64,8 @@ namespace TwitterWise.Models
                         Time = tweet.CreatedAt,
                         Author = tweet.CreatedBy.Name
                     });
+
+                    AdviceModel.ProcessTweet(tweet);
                 }
             }
         }

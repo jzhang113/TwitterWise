@@ -1,0 +1,6 @@
+﻿<div ng-app="stream"></div>
+<input type="button" value="Get Messages" (click)="getMessages()" />
+
+<div *ngIf="stream">
+    <div>{{ stream.text }}</div>
+</div>

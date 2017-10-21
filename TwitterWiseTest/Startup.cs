@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
@@ -15,6 +11,7 @@ namespace TwitterWise
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Models.StreamModel.Start();
         }
 
         public IConfiguration Configuration { get; }

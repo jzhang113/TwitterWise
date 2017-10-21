@@ -1,15 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using TwitterWise.Models;
 
 namespace TwitterWise.Controllers
 {
     public class StreamController : Controller
     {
+        [Route("api/[controller]")]
+        [Produces("application/json")]
+        [HttpGet]
+        public TweetModel Get()
+        {
+            return StreamModel.GetTweet();
+        }
+
         [Route("api/[controller]/start")]
         [HttpGet]
-        public void Start()
+        public StatusCodeResult Start()
         {
             StreamModel.Start();
+
+            return new StatusCodeResult((int)HttpStatusCode.Accepted);
         }
 
         [Route("api/[controller]/start/{item}")]
