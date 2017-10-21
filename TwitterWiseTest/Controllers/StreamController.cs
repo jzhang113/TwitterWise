@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TwitterWiseTest.Models;
+using TwitterWise.Models;
 
-namespace TwitterWiseTest.Controllers
+namespace TwitterWise.Controllers
 {
     public class StreamController : Controller
     {

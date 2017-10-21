@@ -5,7 +5,7 @@ using Tweetinvi.Events;
 using System.Threading;
 using System;
 
-namespace TwitterWiseTest.Models
+namespace TwitterWise.Models
 {
     public class StreamModel
     {

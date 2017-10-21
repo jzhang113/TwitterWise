@@ -4,7 +4,7 @@ using Tweetinvi;
 using Tweetinvi.Models;
 using Tweetinvi.Parameters;
 
-namespace TwitterWiseTest.Models
+namespace TwitterWise.Models
 {
     public class SearchModel
     {

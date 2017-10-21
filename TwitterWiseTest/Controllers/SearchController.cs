@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using TwitterWiseTest.Models;
+using TwitterWise.Models;
 
-namespace TwitterWiseTest.Controllers
+namespace TwitterWise.Controllers
 {
     public class SearchController : Controller
     {

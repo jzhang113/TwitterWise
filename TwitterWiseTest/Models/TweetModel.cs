@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TwitterWiseTest.Models
+namespace TwitterWise.Models
 {
     public class TweetModel
     {
