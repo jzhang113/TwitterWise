@@ -3,8 +3,7 @@ import { Http } from '@angular/http';
 
 @Component({
     selector: 'stream',
-    templateUrl: './stream.component.html',
-    styleUrls: ['./stream.component.css']
+    templateUrl: './stream.component.html'
 })
 export class StreamComponent {
     public stream: Tweet;

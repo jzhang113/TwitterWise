@@ -23,10 +23,10 @@ namespace TwitterWise.Models
             }
         }
 
-        public static void ProcessTweet(ITweet tweet)
+        public static bool ProcessTweet(ITweet tweet)
         {
             if (tweet.IsRetweet)
-                return;
+                return false;
 
             string message = tweet.Text.ToLower();
 
@@ -35,6 +35,7 @@ namespace TwitterWise.Models
                 if (message.StartsWith(word))
                 {
                     HandleTweet(tweet);
+                    return true;
                 }
             }
 
@@ -43,8 +44,11 @@ namespace TwitterWise.Models
                 if (message.Contains(word))
                 {
                     HandleTweet(tweet);
+                    return true;
                 }
             }
+
+            return false;
         }
 
         private static void HandleTweet(ITweet tweet)

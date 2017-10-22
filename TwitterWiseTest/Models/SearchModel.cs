@@ -19,7 +19,7 @@ namespace TwitterWise.Models
             ITwitterCredentials appcreds = Auth.SetApplicationOnlyCredentials(consumerKey, consumerSecret, true);
         }
 
-        public static IEnumerable<TweetModel> Search(string query)
+        public static ICollection<TweetModel>[] Search(string query)
         {
             var searchParameters = new SearchTweetsParameters(query)
             {
@@ -30,12 +30,14 @@ namespace TwitterWise.Models
 
             IEnumerable<ITweet> match = Tweetinvi.Search.SearchTweets(searchParameters);
             ICollection<TweetModel> results = new List<TweetModel>();
-            AddTweets(match, results);
+            ICollection<TweetModel> filteredResults = new List<TweetModel>();
+            AddTweets(match, results, filteredResults);
 
-            return results;
+            ICollection<TweetModel>[] response = { results, filteredResults};
+            return response;
         }
 
-        public static IEnumerable<TweetModel> SearchMore()
+        public static ICollection<TweetModel>[] SearchMore()
         {
             var searchParameters = new SearchTweetsParameters(prevQuery)
             {
@@ -45,27 +47,36 @@ namespace TwitterWise.Models
 
             IEnumerable<ITweet> match = Tweetinvi.Search.SearchTweets(searchParameters);
             ICollection<TweetModel> results = new List<TweetModel>();
-            AddTweets(match, results);
+            ICollection<TweetModel> filteredResults = new List<TweetModel>();
+            AddTweets(match, results, filteredResults);
 
-            return results;
+            ICollection<TweetModel>[] response = { results, filteredResults };
+            return response;
         }
 
-        private static void AddTweets(IEnumerable<ITweet> match, ICollection<TweetModel> list)
+        private static void AddTweets(IEnumerable<ITweet> match, ICollection<TweetModel> list, ICollection<TweetModel> filteredList)
         {
             foreach (var tweet in match)
             {
-                if (!tweet.IsRetweet)
-                {
-                    minId = Math.Min(minId, tweet.Id);
+                minId = Math.Min(minId, tweet.Id);
 
-                    list.Add(new TweetModel()
+                list.Add(new TweetModel()
+                {
+                    Status = true,
+                    Text = tweet.Text,
+                    Time = tweet.CreatedAt,
+                    Author = tweet.CreatedBy.Name
+                });
+
+                if (!tweet.IsRetweet && AdviceModel.ProcessTweet(tweet))
+                {
+                    filteredList.Add(new TweetModel()
                     {
+                        Status = true,
                         Text = tweet.Text,
                         Time = tweet.CreatedAt,
                         Author = tweet.CreatedBy.Name
                     });
-
-                    AdviceModel.ProcessTweet(tweet);
                 }
             }
         }

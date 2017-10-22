@@ -20,28 +20,33 @@ namespace TwitterWise.Models
         private static bool streaming = false;
         private const int CAPACITY = 100;
         private static CircularBuffer<TweetModel> recentTweets;
-        
+        private static CircularBuffer<TweetModel> filteredTweets;
 
         static StreamModel()
         {
             // set the application credentials
             ITwitterCredentials appcreds = Auth.SetUserCredentials(consumerKey, consumerSecret, userKey, userSecret);
             recentTweets = new CircularBuffer<TweetModel>(CAPACITY);
+            filteredTweets = new CircularBuffer<TweetModel>(CAPACITY);
 
             stream = Stream.CreateFilteredStream();
             stream.AddTweetLanguageFilter(LanguageFilter.English);
             stream.MatchingTweetReceived += (sender, args) =>
             {
-                AddTweet(args.Tweet);
-                AdviceModel.ProcessTweet(args.Tweet);
+                AddTweet(args.Tweet, recentTweets);
+
+                if (AdviceModel.ProcessTweet(args.Tweet))
+                    AddTweet(args.Tweet, filteredTweets);
             };
 
             sampleStream = Stream.CreateSampleStream();
             sampleStream.AddTweetLanguageFilter(LanguageFilter.English);
             sampleStream.TweetReceived += (sender, args) =>
             {
-                AddTweet(args.Tweet);
-                AdviceModel.ProcessTweet(args.Tweet);
+                AddTweet(args.Tweet, recentTweets);
+
+                if (AdviceModel.ProcessTweet(args.Tweet))
+                    AddTweet(args.Tweet, filteredTweets);
             };
         }
 
@@ -111,14 +116,24 @@ namespace TwitterWise.Models
             return recentTweets.Front();
         }
 
+        public static TweetModel GetFilteredTweet()
+        {
+            return filteredTweets.Front();
+        }
+
         public static CircularBuffer<TweetModel> GetAllTweets()
         {
             return recentTweets;
         }
 
-        private static void AddTweet(ITweet tweet)
+        public static CircularBuffer<TweetModel> GetAllFilteredTweets()
         {
-            recentTweets.PushFront(new TweetModel
+            return filteredTweets;
+        }
+
+        private static void AddTweet(ITweet tweet, CircularBuffer<TweetModel> buffer)
+        {
+            buffer.PushFront(new TweetModel
             {
                 Text = tweet.Text,
                 Time = tweet.CreatedAt,

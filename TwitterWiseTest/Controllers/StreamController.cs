@@ -2,6 +2,7 @@
 using System.Net;
 using TwitterWise.Models;
 using CircularBuffer;
+using System.Collections.Generic;
 
 namespace TwitterWise.Controllers
 {
@@ -12,15 +13,81 @@ namespace TwitterWise.Controllers
         [HttpGet]
         public TweetModel Get()
         {
-            return StreamModel.GetTweet();
+            TweetModel model = StreamModel.GetTweet();
+
+            if (model == null)
+            {
+                return new TweetModel()
+                {
+                    Status = false
+                };
+            }
+            else
+            {
+                model.Status = true;
+                return model;
+            }
+        }
+
+        [Route("api/[controller]/filtered")]
+        [Produces("application/json")]
+        [HttpGet]
+        public TweetModel GetFiltered()
+        {
+            TweetModel model =  StreamModel.GetFilteredTweet();
+
+            if (model == null)
+            {
+                return new TweetModel()
+                {
+                    Status = false
+                };
+            }
+            else
+            {
+                model.Status = true;
+                return model;
+            }
         }
 
         [Route("api/[controller]/all")]
         [Produces("application/json")]
         [HttpGet]
-        public CircularBuffer<TweetModel> GetAll()
+        public IEnumerable<TweetModel> GetAll()
         {
-            return StreamModel.GetAllTweets();
+            CircularBuffer<TweetModel> list = StreamModel.GetAllTweets();
+            ICollection<TweetModel> response = new List<TweetModel>();
+
+            foreach (TweetModel m in list)
+            {
+                if (m != null)
+                {
+                    m.Status = true;
+                    response.Add(m);
+                }
+            }
+
+            return response;
+        }
+
+        [Route("api/[controller]/filtered/all")]
+        [Produces("application/json")]
+        [HttpGet]
+        public IEnumerable<TweetModel> GetAllFiltered()
+        {
+            CircularBuffer<TweetModel> list = StreamModel.GetAllFilteredTweets();
+            ICollection<TweetModel> response = new List<TweetModel>();
+
+            foreach (TweetModel m in list)
+            {
+                if (m != null)
+                {
+                    m.Status = true;
+                    response.Add(m);
+                }
+            }
+
+            return response;
         }
 
         [Route("api/[controller]/start")]
@@ -34,23 +101,29 @@ namespace TwitterWise.Controllers
 
         [Route("api/[controller]/start/{item}")]
         [HttpGet]
-        public void Start(string item)
+        public StatusCodeResult Start(string item)
         {
             StreamModel.AddWatch(item);
+
+            return new StatusCodeResult((int)HttpStatusCode.Accepted);
         }
 
         [Route("api/[controller]/stop")]
         [HttpGet]
-        public void Stop()
+        public StatusCodeResult Stop()
         {
             StreamModel.StopAll();
+
+            return new StatusCodeResult((int)HttpStatusCode.Accepted);
         }
 
         [Route("api/[controller]/stop/{item}")]
         [HttpGet]
-        public void Stop(string item)
+        public StatusCodeResult Stop(string item)
         {
             StreamModel.RemoveWatch(item);
+
+            return new StatusCodeResult((int)HttpStatusCode.Accepted);
         }
     }
 }

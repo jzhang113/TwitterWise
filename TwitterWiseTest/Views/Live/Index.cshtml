@@ -1,0 +1,27 @@
+﻿@model TwitterWise.Models.QueryModel
+@{
+    ViewData["Title"] = "Live View";
+}
+
+<center>
+    <div class="Logo">
+        <img id="trueimage" src="~/images/Twitterwiselogo.png" />
+    </div>
+</center>
+
+<div class="title">
+    <h1 style="text-align:center">TwitterWise</h1>
+</div>
+
+<div class="MainText">
+    <h3 style="text-align:center;">Words of Wisdom from Twitter</h3>
+</div>
+
+<div class="messages">
+    <h3 id="stream" style="display:inline-block"></h3>
+    <span id="reload" style="font-size:16px; padding-left:10px"><b>&#x21bb;</b></span>
+</div>
+
+@section Scripts {
+    <script src="~/scripts/live.js"></script>
+}

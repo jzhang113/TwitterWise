@@ -3,8 +3,13 @@
 	position: relative;	
 }
 
+.messages
+{
+    text-align: center;
+    padding: 40px 10px;
+}
+
 form[type=text] {
-	
 	width: 20%;
 	padding: 12px 20px;
     margin: 8px 0;

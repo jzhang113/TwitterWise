@@ -28,39 +28,12 @@
         <button type="submit" style="background:url(/images/GetWiseButton.png); background-size:cover" class="btn btn-default" id="SearchBtn"> </button>
     </div>
 
-    <div style="text-align:center">
-        <div id="tweet" style="display:inline-block"></div>
-        <div id="fav" style="display:none" title="Favorite this tweet">&#10084;</div>
+    <div class="messages">
+        <h3 id="tweet" style="display:inline-block"></h3>
+        <span id="fav" style="display:none; padding-left: 10px" title="Favorite this tweet">&#10084;</span>
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $('#SearchBtn').on('click', function () {
-
-            var searchQuery = $("#SearchInput").val();
-
-            $.ajax({
-                type: "GET",
-                url: "/api/search/" + searchQuery,
-                success: function (result) {
-                    if (result != null) {
-                        var tweet = result[0];
-                        $("#tweet").text(tweet.text + " - " + tweet.author);
-                        $("#fav").css("display", "inline-block");
-                    } else {
-                        $("#fav").hide();
-                    }
-                }
-            });
-        });
-
-        var fav = $('#fav')
-        fav.on('click', function () {
-            if (fav.css("color") === "rgb(255, 0, 0)")
-                fav.css("color", "black");
-            else
-                fav.css("color", "red");
-        });
-    });
-</script>
+@section Scripts {
+    <script src="~/scripts/home.js"></script>
+}
