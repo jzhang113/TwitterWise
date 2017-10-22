@@ -14,12 +14,16 @@ namespace TwitterWise.Models
         {
             using (StreamReader sr = new StreamReader("adviceWords.txt"))
             {
-                adviceKeywords.Add(sr.ReadLine());
+                string s;
+                while((s = sr.ReadLine()) != null)
+                    adviceKeywords.Add(s);
             }
 
             using (StreamReader sr = new StreamReader("advicePrefix.txt"))
             {
-                advicePrefixes.Add(sr.ReadLine());
+                string s;
+                while ((s = sr.ReadLine()) != null)
+                    advicePrefixes.Add(s);
             }
         }
 
@@ -57,7 +61,7 @@ namespace TwitterWise.Models
 
             using (StreamWriter sw = new StreamWriter("twitteradvice.txt", true))
             {
-                sw.WriteLine(tweet.Text + " - " + tweet.CreatedBy.Name);
+                sw.WriteLine(tweet.Text + " - " + tweet.CreatedBy.Name + "\n");
             }
         }
     }

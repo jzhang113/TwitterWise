@@ -9,6 +9,12 @@
     padding: 40px 10px;
 }
 
+.options
+{
+    text-align: center;
+    padding: 40px 10px;
+}
+
 form[type=text] {
 	width: 20%;
 	padding: 12px 20px;

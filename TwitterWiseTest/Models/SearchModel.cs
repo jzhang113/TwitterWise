@@ -12,6 +12,7 @@ namespace TwitterWise.Models
         private static string consumerSecret = "JT6B1q4Ym36xIIbYn08NywDybtealgn5V6PQ35TJz2Rs1x9qZ3";
         private static long minId = long.MaxValue;
         private static string prevQuery = "";
+        private static int pages = 0;
 
         static SearchModel()
         {
@@ -26,6 +27,7 @@ namespace TwitterWise.Models
                 MaximumNumberOfResults = 100
             };
             minId = long.MaxValue;
+            pages = 0;
             prevQuery = query;
 
             IEnumerable<ITweet> match = Tweetinvi.Search.SearchTweets(searchParameters);
@@ -33,12 +35,17 @@ namespace TwitterWise.Models
             ICollection<TweetModel> filteredResults = new List<TweetModel>();
             AddTweets(match, results, filteredResults);
 
-            ICollection<TweetModel>[] response = { results, filteredResults};
+            ICollection<TweetModel>[] response = new ICollection<TweetModel>[2];
+            response[0] = results;
+            response[1] = filteredResults;
             return response;
         }
 
         public static ICollection<TweetModel>[] SearchMore()
         {
+            if (minId < 100 || pages++ > 10)
+                return null;
+
             var searchParameters = new SearchTweetsParameters(prevQuery)
             {
                 MaximumNumberOfResults = 100,
@@ -50,7 +57,9 @@ namespace TwitterWise.Models
             ICollection<TweetModel> filteredResults = new List<TweetModel>();
             AddTweets(match, results, filteredResults);
 
-            ICollection<TweetModel>[] response = { results, filteredResults };
+            ICollection<TweetModel>[] response = new ICollection<TweetModel>[2];
+            response[0] = results;
+            response[1] = filteredResults;
             return response;
         }
 
