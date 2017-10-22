@@ -1,10 +1,66 @@
+﻿@model TwitterWise.Models.QueryModel
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<app asp-prerender-module="ClientApp/dist/main-server">Loading...</app>
+<center>
+    <div class="Logo">
+        <img id="trueimage" src="~/images/Twitterwiselogo.png" />
+    </div>
+</center>
 
-<script src="~/dist/vendor.js" asp-append-version="true"></script>
-@section scripts {
-    <script src="~/dist/main-client.js" asp-append-version="true"></script>
-}
+<div class="title">
+    <h1 style="text-align:center">TwitterWise</h1>
+</div>
+
+<div class="MainText">
+    <h3 style="text-align:center;">Words of Wisdom at the Click of a Button</h3>
+</div>
+
+<div class="Instructions">
+    <h2 style="text-align:center">Input Your Subject and Click the Button for Words of Wisdom</h2>
+</div>
+
+<div id="ResponseElement">
+    <div style="text-align:center">
+        <label style="font-size:16px; line-height:50px">Hashtag:</label>
+        <input type="text" id="SearchInput" />
+        <button type="submit" style="background:url(/images/GetWiseButton.png); background-size:cover" class="btn btn-default" id="SearchBtn"> </button>
+    </div>
+
+    <div style="text-align:center">
+        <div id="tweet" style="display:inline-block"></div>
+        <div id="fav" style="display:none" title="Favorite this tweet">&#10084;</div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#SearchBtn').on('click', function () {
+
+            var searchQuery = $("#SearchInput").val();
+
+            $.ajax({
+                type: "GET",
+                url: "/api/search/" + searchQuery,
+                success: function (result) {
+                    if (result != null) {
+                        var tweet = result[0];
+                        $("#tweet").text(tweet.text + " - " + tweet.author);
+                        $("#fav").css("display", "inline-block");
+                    } else {
+                        $("#fav").hide();
+                    }
+                }
+            });
+        });
+
+        var fav = $('#fav')
+        fav.on('click', function () {
+            if (fav.css("color") === "rgb(255, 0, 0)")
+                fav.css("color", "black");
+            else
+                fav.css("color", "red");
+        });
+    });
+</script>

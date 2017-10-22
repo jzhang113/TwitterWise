@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TwitterWise.Models;
+using CircularBuffer;
 
 namespace TwitterWise.Controllers
 {
@@ -12,6 +13,14 @@ namespace TwitterWise.Controllers
         public TweetModel Get()
         {
             return StreamModel.GetTweet();
+        }
+
+        [Route("api/[controller]/all")]
+        [Produces("application/json")]
+        [HttpGet]
+        public CircularBuffer<TweetModel> GetAll()
+        {
+            return StreamModel.GetAllTweets();
         }
 
         [Route("api/[controller]/start")]

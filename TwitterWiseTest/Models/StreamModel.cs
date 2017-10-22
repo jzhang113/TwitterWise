@@ -111,6 +111,11 @@ namespace TwitterWise.Models
             return recentTweets.Front();
         }
 
+        public static CircularBuffer<TweetModel> GetAllTweets()
+        {
+            return recentTweets;
+        }
+
         private static void AddTweet(ITweet tweet)
         {
             recentTweets.PushFront(new TweetModel

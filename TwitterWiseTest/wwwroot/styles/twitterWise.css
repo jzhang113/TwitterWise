@@ -1,0 +1,39 @@
+.Logo
+{
+	position: relative;	
+}
+
+form[type=text] {
+	
+	width: 20%;
+	padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+#trueimage
+{
+	width: 200px;
+	height:auto;
+	
+	
+}
+
+body {
+    background: url(/images/vintage-leaves.png) repeat 0 0;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-seriff;
+    font-weight: 300;
+}
+
+#SearchBtn
+{
+	width: 120px;
+	height: 25px;
+}
+
+#SearchBtn:hover
+{
+	opacity: 0.6;
+}
